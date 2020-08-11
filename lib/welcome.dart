@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'login.dart';
+import 'signup.dart';
 
 class YarnWelcome extends StatefulWidget {
   @override
@@ -9,8 +11,8 @@ class YarnWelcome extends StatefulWidget {
 }
 
 class _YarnWelcomeState extends State<YarnWelcome> {
-  String _email;
-  String _password;
+  Color color1 = Colors.white;
+  Color color2 = Colors.black;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                       color: Colors.black),
                 )),
             Padding(
-              padding: EdgeInsets.all(150),
+              padding: EdgeInsets.all(125),
             ),
             Align(
                 alignment: Alignment.center,
@@ -41,7 +43,6 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                     height: 60,
                     width: MediaQuery.of(context).size.width * 0.75,
                     decoration: BoxDecoration(
-                      border: Border.all(width: 2),
                       borderRadius: BorderRadius.all(Radius.circular(
                               5.0) //         <--- border radius here
                           ),
@@ -49,7 +50,13 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                     child: FlatButton(
                       color: Colors.black,
                       textColor: Colors.white,
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => YarnLogin(),
+                            ))
+                      },
                       child: Text(
                         'Log in',
                         style: TextStyle(
@@ -73,7 +80,13 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                     child: FlatButton(
                       color: Colors.white,
                       textColor: Colors.black,
-                      onPressed: () => {},
+                      onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => YarnSignUp(),
+                            ))
+                      },
                       child: Text(
                         'Sign up',
                         style: TextStyle(

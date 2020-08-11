@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'welcome.dart';
+import 'signup.dart';
+import 'login.dart';
 
 void main() {
   Paint.enableDithering = true;
