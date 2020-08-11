@@ -80,6 +80,9 @@ flutter:
       fonts:
         - asset: fonts/DroidSerif-Bold.ttf
         - asset: fonts/DroidSerif-Regular.ttf
+    - family: Sriracha
+      fonts:
+        - asset: fonts/Sriracha-Regular.ttf
     
   #
   # For details regarding fonts from package dependencies,
