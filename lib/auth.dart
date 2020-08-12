@@ -7,19 +7,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'welcome.dart';
 
-class YarnSignUp extends StatefulWidget {
+class YarnAuth extends StatefulWidget {
+  YarnAuth({this.formType, this.onSignedIn});
+  final FormType formType;
+  final VoidCallback onSignedIn;
+
   @override
-  State<StatefulWidget> createState() => new _YarnSignUpState();
+  State<StatefulWidget> createState() => new _YarnAuthState();
 }
 
-// create a form object/widget for less code / easier readability
-class _YarnSignUpState extends State<YarnSignUp> {
+class _YarnAuthState extends State<YarnAuth> {
+  _YarnAuthState();
   final formKey = new GlobalKey<FormState>();
 
   String _email;
   String _password;
-  FormType formType = FormType.register;
-  String _errMsg;
 
   bool isValidAccount() {
     final currentForm = formKey.currentState;
@@ -33,7 +35,7 @@ class _YarnSignUpState extends State<YarnSignUp> {
   void submitAuthForm() async {
     if (isValidAccount()) {
       try {
-        if (formType == FormType.login) {
+        if (widget.formType == FormType.login) {
           FirebaseUser user = (await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: _email.trim(), password: _password))
@@ -46,6 +48,7 @@ class _YarnSignUpState extends State<YarnSignUp> {
               .user;
           print('Created account: ${user.uid}');
         }
+        widget.onSignedIn();
       } catch (e) {
         print(
             'Error: $e'); // if ERROR_USER_NOT_FOUND, then errorborder hint: email does not exist
@@ -70,7 +73,7 @@ class _YarnSignUpState extends State<YarnSignUp> {
     String headerText;
     String actionTerm;
 
-    if (formType == FormType.login) {
+    if (widget.formType == FormType.login) {
       headerText = 'Login';
       actionTerm = 'logging in';
     } else {
@@ -113,7 +116,7 @@ class _YarnSignUpState extends State<YarnSignUp> {
                                 BorderSide(color: Colors.red, width: 2.0))),
                     validator: (value) => value.isEmpty
                         ? 'FIELD REQUIRED'
-                        : EmailValidator.validate(value)
+                        : !EmailValidator.validate(value)
                             ? 'INVALID EMAIL'
                             : null,
                     onSaved: (value) => _email = value,

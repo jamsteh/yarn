@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
-import 'login.dart';
-import 'signup.dart';
+import 'auth.dart';
 
 class YarnWelcome extends StatefulWidget {
+  YarnWelcome({this.onSignedIn});
+  final VoidCallback onSignedIn;
+
   @override
   State<StatefulWidget> createState() => new _YarnWelcomeState();
 }
@@ -56,7 +58,10 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => YarnLogin(),
+                              builder: (context) => YarnAuth(
+                                formType: FormType.login,
+                                onSignedIn: widget.onSignedIn,
+                              ),
                             ))
                       },
                       child: Text(
@@ -86,7 +91,10 @@ class _YarnWelcomeState extends State<YarnWelcome> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => YarnSignUp(),
+                              builder: (context) => YarnAuth(
+                                formType: FormType.register,
+                                onSignedIn: widget.onSignedIn,
+                              ),
                             ))
                       },
                       child: Text(

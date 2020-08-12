@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'welcome.dart';
-import 'signup.dart';
-import 'login.dart';
+import 'root.dart';
 
 void main() {
   Paint.enableDithering = true;
@@ -24,7 +21,7 @@ class YarnMain extends StatelessWidget {
       // the reason why this isn't working is because I haven't added
       // a home route yet. add home: and add a stateful widget
       // with a constructor for this class
-      home: YarnWelcome(),
+      home: YarnRoot(),
     );
   }
 }
