@@ -42,7 +42,10 @@ class _YarnLoginState extends State<YarnLogin> {
                                       color: Colors.grey[200], width: 2.0)),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.grey[200], width: 2.0)))),
+                                      color: Colors.grey[200], width: 2.0)),
+                              errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.red, width: 2.0)))),
                       new Padding(padding: EdgeInsets.all(5.0)),
                       new TextFormField(
                           obscureText: true,
@@ -81,7 +84,7 @@ class _YarnLoginState extends State<YarnLogin> {
                   child: FlatButton(
                     color: Colors.black,
                     textColor: Colors.white,
-                    onPressed: () => {/* add account to firebase */},
+                    onPressed: () => {},
                     child: Text(
                       'Log in',
                       style: TextStyle(

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "50317153330",
+    "firebase_url": "https://yarn-base.firebaseio.com",
+    "project_id": "yarn-base",
+    "storage_bucket": "yarn-base.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50317153330:android:d5ac7ec7a5ca2882b4582b",
+        "android_client_info": {
+          "package_name": "com.example.unite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "50317153330-0p3si59l3hrmp4na88pk2s5v3ot91i5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLSj55btHAD9fOuzmV66pEPiz_r0XIpAU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50317153330-0p3si59l3hrmp4na88pk2s5v3ot91i5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

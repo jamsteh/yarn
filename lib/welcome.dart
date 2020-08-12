@@ -10,6 +10,8 @@ class YarnWelcome extends StatefulWidget {
   State<StatefulWidget> createState() => new _YarnWelcomeState();
 }
 
+enum FormType { login, register }
+
 class _YarnWelcomeState extends State<YarnWelcome> {
   Color color1 = Colors.white;
   Color color2 = Colors.black;
