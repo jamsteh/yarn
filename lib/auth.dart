@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'dart:core';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
 import 'welcome.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class YarnAuth extends StatefulWidget {
   YarnAuth({this.formType, this.onSignedIn});
@@ -19,6 +17,7 @@ class YarnAuth extends StatefulWidget {
 class _YarnAuthState extends State<YarnAuth> {
   _YarnAuthState();
   final formKey = new GlobalKey<FormState>();
+  bool _loading = false;
 
   String _email;
   String _password;
@@ -34,6 +33,7 @@ class _YarnAuthState extends State<YarnAuth> {
 
   void submitAuthForm() async {
     if (isValidAccount()) {
+      setState(() => _loading = true);
       try {
         if (widget.formType == FormType.login) {
           FirebaseUser user = (await FirebaseAuth.instance
@@ -52,31 +52,64 @@ class _YarnAuthState extends State<YarnAuth> {
       } catch (e) {
         print(
             'Error: $e'); // if ERROR_USER_NOT_FOUND, then errorborder hint: email does not exist
-
+        setState(() => _loading = false);
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var _loadingWidget = _loading == true
+        ? buildLoadingScreen()
+        : Center(); // if loadingstate is true, add it to stack
     return new Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: true,
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: buildAuthInterface(),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: buildAuthInterface(),
+              ),
+              _loadingWidget,
+            ],
           ),
         ));
   }
 
+  Widget buildLoadingScreen() {
+    return Center(
+        // add alpha to take up whole screen
+        child: Container(
+      alignment: Alignment.center,
+      child: Container(
+        child: SpinKitCircle(color: Colors.blue, size: 50),
+        height: 100,
+        width: 100,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(
+              Radius.circular(15.0) //         <--- border radius here
+              ),
+        ),
+      ),
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.height,
+      color: Color(0x10000000),
+    ));
+  }
+
   List<Widget> buildAuthInterface() {
+    String authTerm;
     String headerText;
     String actionTerm;
 
     if (widget.formType == FormType.login) {
-      headerText = 'Login';
+      authTerm = 'Login';
+      headerText = authTerm;
       actionTerm = 'logging in';
     } else {
+      authTerm = 'Sign up';
       headerText = 'Create an account';
       actionTerm = 'signing up';
     }
@@ -87,6 +120,7 @@ class _YarnAuthState extends State<YarnAuth> {
           child: new Form(
               key: formKey,
               child: new Column(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   new Align(
                       alignment: Alignment.topLeft,
@@ -116,7 +150,7 @@ class _YarnAuthState extends State<YarnAuth> {
                                 BorderSide(color: Colors.red, width: 2.0))),
                     validator: (value) => value.isEmpty
                         ? 'FIELD REQUIRED'
-                        : !EmailValidator.validate(value)
+                        : !EmailValidator.validate(value.trim())
                             ? 'INVALID EMAIL'
                             : null,
                     onSaved: (value) => _email = value,
@@ -153,30 +187,29 @@ class _YarnAuthState extends State<YarnAuth> {
                     'By $actionTerm, you accept yarn\'s \nTerms of Service and Privacy Policy',
                     textAlign: TextAlign.center,
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(
-                        MediaQuery.of(context).size.height * 0.10),
-                  ),
-                  Container(
-                      height: 60,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(
-                                5.0) //         <--- border radius here
-                            ),
-                      ),
-                      child: FlatButton(
-                        color: Colors.black,
-                        textColor: Colors.white,
-                        onPressed: submitAuthForm,
-                        child: Text(
-                          'Sign up',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25.0),
-                        ),
-                      )),
+//                  Padding(
+//                    padding: EdgeInsets.all(
+//                        MediaQuery.of(context).size.height * 0.10),
+//                  ),
                 ],
-              )))
+              ))),
+      Container(
+          height: 60,
+          width: MediaQuery.of(context).size.width * 0.75,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+                Radius.circular(5.0) //         <--- border radius here
+                ),
+          ),
+          child: FlatButton(
+            color: Colors.black,
+            textColor: Colors.white,
+            onPressed: submitAuthForm,
+            child: Text(
+              authTerm,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0),
+            ),
+          )),
     ];
   }
 }
